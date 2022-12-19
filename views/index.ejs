@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dramacool Video Links Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="p-2 bg-gray-800 md:p-10 grid place-items-center">
+    <div class="rounded-xl bg-gray-900 shadow-lg w-full md:max-w-[75%] p-10">
+      <div
+        class="text-lg flex-col md:flex-row md:text-3xl gap-2 font-bold text-rose-400 mb-10 flex items-center"
+      >
+        <div>RemApple Dramacool Link Extractor</div>
+        <a
+          class="text-sm bg-red-400 text-white p-1 rounded-lg"
+          href="https://dramacool.sr"
+          target="_blank"
+        >
+          Dramacool Website</a
+        >
+      </div>
+
+      <% if(locals.episodeLinks && !episodeLinks?.status) {%>
+      <div class="text-red-600 py-2"><%= episodeLinks?.message %></div>
+      <% } %>
+      <form action="/" class="flex flex-col gap-7" method="post">
+        <div class="grid gap-2">
+          <label for="link" class="text-slate-400"
+            >Enter link for your favourite Drama's Homepage</label
+          >
+          <input
+            style="
+              box-shadow: 0 0px 2px 0px rgba(0, 0, 0, 0.2),
+                0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+            "
+            class="px-3 py-2 text-slate-300 rounded focus:outline-blue-400 min-w-0 bg-gray-800"
+            type="url"
+            name="link"
+            id="link"
+          />
+        </div>
+        <button
+          type="submit"
+          class="px-5 rounded-lg py-2 bg-sky-600 text-white"
+        >
+          Get Episodes Link
+        </button>
+      </form>
+    </div>
+    <div
+      class="rounded-xl bg-gray-900 shadow-lg w-full md:max-w-[75%] p-4 mt-5"
+    >
+      <h1 class="text-2xl text-slate-400 py-2 bg-gray-700 p-5 rounded-xl">
+        Video Links
+      </h1>
+      <ul class="grid gap-2 p-4">
+        <% if(locals.episodeLinks && episodeLinks?.status) { %> <%
+        episodeLinks?.data?.map(episode => { %>
+        <li>
+          <a
+            class="rounded-full my-1 px-2 bg-rose-700 text-white w-full"
+            target="_blank"
+            href="<%= episode?.link %>"
+            ><%= episode?.title %></a
+          >
+        </li>
+        <% })} else { %>
+        <span class="text-rose-200 p-5">No content</span>
+        <% } %>
+      </ul>
+    </div>
+  </body>
+</html>
