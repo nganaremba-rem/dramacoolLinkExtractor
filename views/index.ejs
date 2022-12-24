@@ -6,6 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dramacool Video Links Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="shortcut icon"
+      href="images/pngwing.com.png"
+      type="image/x-icon"
+    />
+    <style>
+      .loading {
+        width: 50px;
+        height: 50px;
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        animation: spin 2s linear infinite;
+        margin: 0 auto;
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body class="p-2 bg-gray-800 md:p-10 grid place-items-center">
     <div class="rounded-xl bg-gray-900 shadow-lg w-full md:max-w-[75%] p-10">
@@ -39,14 +65,17 @@
             type="url"
             name="link"
             id="link"
+            required
           />
         </div>
         <button
           type="submit"
+          onclick="handleLoading()"
           class="px-5 rounded-lg py-2 bg-sky-600 text-white"
         >
           Get Episodes Link
         </button>
+        <div class="loading"></div>
       </form>
     </div>
     <div
@@ -71,5 +100,17 @@
         <% } %>
       </ul>
     </div>
+
+    <script>
+      function handleLoading() {
+        const [...required] = document.querySelectorAll("[required]");
+        const validate = required.every(
+          (requiredFields) => requiredFields.value !== "",
+        );
+        if (!validate) return;
+        const loading = document.querySelector(".loading");
+        loading.style.display = "block";
+      }
+    </script>
   </body>
 </html>

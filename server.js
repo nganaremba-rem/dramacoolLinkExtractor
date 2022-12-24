@@ -6,6 +6,7 @@ const port = process.env.PORT || 4000;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
 
 const getLinks = async (movieLink) => {
   try {
@@ -18,12 +19,13 @@ const getLinks = async (movieLink) => {
     // open new tab and goto the link
     const page = await browser.newPage();
     console.log("Browser Launched");
-    await page.goto(movieLink, { waitUntil: "domcontentloaded" });
+    await page.goto(movieLink, { waitUntil: "domcontentloaded", timeout: 0 });
     console.log("Link open");
 
     // get all the episodes links
     const episodeLinks = await page.$$eval(".all-episode > li", (list) => {
       console.log("Getting episode page link");
+      list.reverse();
       return list.map((currentList) => currentList.children[0].href);
     });
 
@@ -32,6 +34,7 @@ const getLinks = async (movieLink) => {
         let newPage = await browser.newPage();
         await newPage.goto(episode, {
           waitUntil: "domcontentloaded",
+          timeout: 0,
         });
         console.log("Opening index: " + index);
         //   get the link
@@ -52,8 +55,8 @@ const getLinks = async (movieLink) => {
         };
       }),
     );
-    // await browser.close();
-    console.log("Success");
+    await browser.close();
+    console.log("Finished");
     if (finalLinks.length) return { status: true, data: finalLinks };
     return { message: "Link not Valid", status: false };
   } catch (err) {
@@ -68,9 +71,18 @@ app.get("/", (req, res) => {
 
 app.post("/", async (req, res) => {
   console.log("POST /");
+  const HOST = "dramacool.sr";
   const link = req.body.link;
+  const url = new URL(link);
+  if (HOST !== url.host)
+    return res.render("index", {
+      episodeLinks: {
+        status: false,
+        message: "Only dramacool.sr links are supported",
+      },
+    });
   const episodeLinks = await getLinks(link);
-  res.render("index", { episodeLinks });
+  return res.render("index", { episodeLinks });
 });
 
 app.listen(port, () => console.log(`Server is listening on port ${port}`));
