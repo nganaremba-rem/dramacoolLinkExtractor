@@ -44,7 +44,7 @@ const getLinks = async (movieLink) => {
           ".watch-drama > h1",
           (h1) => h1.textContent,
         );
-        console.log("Done Getting links");
+        console.log({ title, link });
 
         return {
           link,
