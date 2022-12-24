@@ -28,12 +28,12 @@ const getLinks = async (movieLink) => {
     });
 
     const finalLinks = await Promise.all(
-      episodeLinks.map(async (episode) => {
+      episodeLinks.map(async (episode, index) => {
         let newPage = await browser.newPage();
         await newPage.goto(episode, {
           waitUntil: "domcontentloaded",
         });
-        console.log("New Link opened");
+        console.log("Opening index: " + index);
         //   get the link
         const link = await newPage.$eval(
           "#frame_wrap > iframe",
