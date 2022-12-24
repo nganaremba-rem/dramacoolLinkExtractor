@@ -52,8 +52,8 @@ const getLinks = async (movieLink) => {
         };
       }),
     );
-    await browser.close();
-    console.log("Browser Closed");
+    // await browser.close();
+    console.log("Success");
     if (finalLinks.length) return { status: true, data: finalLinks };
     return { message: "Link not Valid", status: false };
   } catch (err) {
