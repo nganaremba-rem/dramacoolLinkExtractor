@@ -17,10 +17,13 @@ const getLinks = async (movieLink) => {
 
     // open new tab and goto the link
     const page = await browser.newPage();
-    await page.goto(movieLink, { waitUntil: "domcontentloaded", timeout: 0 });
+    console.log("Browser Launched");
+    await page.goto(movieLink, { waitUntil: "domcontentloaded" });
+    console.log("Link open");
 
     // get all the episodes links
     const episodeLinks = await page.$$eval(".all-episode > li", (list) => {
+      console.log("Getting episode page link");
       return list.map((currentList) => currentList.children[0].href);
     });
 
@@ -29,8 +32,8 @@ const getLinks = async (movieLink) => {
         let newPage = await browser.newPage();
         await newPage.goto(episode, {
           waitUntil: "domcontentloaded",
-          timeout: 0,
         });
+        console.log("New Link opened");
         //   get the link
         const link = await newPage.$eval(
           "#frame_wrap > iframe",
@@ -41,6 +44,7 @@ const getLinks = async (movieLink) => {
           ".watch-drama > h1",
           (h1) => h1.textContent,
         );
+        console.log("Done Getting links");
 
         return {
           link,
@@ -49,6 +53,7 @@ const getLinks = async (movieLink) => {
       }),
     );
     await browser.close();
+    console.log("Browser Closed");
     if (finalLinks.length) return { status: true, data: finalLinks };
     return { message: "Link not Valid", status: false };
   } catch (err) {
