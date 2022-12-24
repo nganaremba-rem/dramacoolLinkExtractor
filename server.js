@@ -29,7 +29,7 @@ const getLinks = async (movieLink) => {
       return list.map((currentList) => currentList.children[0].href);
     });
 
-    const finalLinks = await Promise.all(
+    const finalLinks = await Promise.allSettled(
       episodeLinks.map(async (episode, index) => {
         let newPage = await browser.newPage();
         await newPage.goto(episode, {
