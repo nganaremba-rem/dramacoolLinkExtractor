@@ -85,17 +85,19 @@
         Video Links
       </h1>
       <ul class="grid gap-2 p-4">
-        <% if(locals.episodeLinks && episodeLinks?.status) { %> <%
-        episodeLinks?.data?.map(episode => { %>
+        <% if(locals.episodeLinks && episodeLinks?.length) {
+        episodeLinks?.map(episode => { if(episode?.status === "fulfilled") { %>
         <li>
           <a
             class="visited:bg-blue-400 rounded-full my-1 px-2 bg-rose-700 text-white w-full"
             target="_blank"
-            href="<%= episode?.link %>"
-            ><%= episode?.title %></a
+            href="<%= episode?.value?.link %>"
+            ><%= episode?.value?.title %></a
           >
         </li>
-        <% })} else { %>
+        <% } else { %>
+        <h4 class="text-white p-2 rounded">No data</h4>
+        <% }})} else { %>
         <span class="text-rose-200 p-5">No content</span>
         <% } %>
       </ul>

@@ -57,7 +57,7 @@ const getLinks = async (movieLink) => {
     );
     await browser.close();
     console.log("Finished");
-    if (finalLinks.length) return { status: true, data: finalLinks };
+    if (finalLinks.length) return finalLinks;
     return { message: "Link not Valid", status: false };
   } catch (err) {
     console.log(err.message);
@@ -82,6 +82,7 @@ app.post("/", async (req, res) => {
       },
     });
   const episodeLinks = await getLinks(link);
+  console.log(episodeLinks);
   return res.render("index", { episodeLinks });
 });
 
