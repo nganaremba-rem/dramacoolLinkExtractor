@@ -57,10 +57,12 @@ const getLinks = async (movieLink) => {
 };
 
 app.get("/", (req, res) => {
+  console.log("Get /");
   res.render("index");
 });
 
 app.post("/", async (req, res) => {
+  console.log("POST /");
   const link = req.body.link;
   const episodeLinks = await getLinks(link);
   res.render("index", { episodeLinks });
